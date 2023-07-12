@@ -13,16 +13,22 @@
     }
     .display {
         font-family: Helvetica, Arial, sans-serif;
-        font-size: 3em;
+        font-size: 6em;
         text-align: center;
-        margin: 0.5em;
+        margin: 0.1em;
         color: white;
     }
     .label {
         font-family: Helvetica, Arial, sans-serif;
         font-size: 1em;
         text-align: center;
-        margin: 0.5em;
+        margin: 3em 0 0 0;
+        color: white;
+    }
+    .units {
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 0.8em;
+        text-align: center;
         color: white;
     }
 </style>
@@ -30,8 +36,10 @@
 <body>
     <div class="label">Speed</div>
     <div id="speed" class="display">Loading</div>
+    <div class="units">mph</div>
     <div class="label">Avg Speed</div>
     <div id="avg_speed" class="display">Loading</div>
+    <div class="units">mph</div>
 <script>
 function detectGeolocation(success, fail){
     if (navigator.geolocation) {
@@ -41,7 +49,7 @@ function detectGeolocation(success, fail){
     }
 }
 function formattedSpeed(speed){
-    return speed.toFixed(2) + ' mph';
+    return speed.toFixed(2) + '';
 }
 
 function geoSucc(){
