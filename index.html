@@ -40,6 +40,9 @@ function detectGeolocation(success, fail){
         fail();
     }
 }
+function formattedSpeed(speed){
+    return speed.toFixed(2) + ' mph';
+}
 
 function geoSucc(){
     const speedAverager = createSpeedAverager(30);
