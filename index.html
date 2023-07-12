@@ -53,7 +53,7 @@ function formattedSpeed(speed){
 }
 
 function geoSucc(){
-    const speedAverager = createSpeedAverager(30);
+    const speedAverager = createSpeedAverager();
     const options = {
         enableHighAccuracy: true,
         timeout: 5000,
@@ -69,21 +69,22 @@ function geoSucc(){
     }, options);
 }
 
-function createSpeedAverager(n){
-    // creates a speed averager with window size n 
-    // and returns a function that takes in a speed and returns the average
-    let speeds = [];
+function createSpeedAverager(){
+    // returns function that calculates average of
+    // all received values
+    let total = 0;
+    let count = 0;
     return function(speed){
         if (typeof speed !== "number"){
-            speed = 0;
+            return 0;
         }
-        speeds.push(speed);
-        if (speeds.length > n){
-            speeds.shift();
-        }
-        return speeds.reduce((a, b) => a + b, 0) / speeds.length;
+        total += speed;
+        count += 1;
+        return total / count;
     }
 }
+
+function createTotalAverage
 
 function mpsToMph(speed){
     if (typeof speed !== "number"){
