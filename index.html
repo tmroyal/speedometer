@@ -49,8 +49,9 @@ function geoSucc(){
     navigator.geolocation.watchPosition(function(position) {
         const speedMph = mpsToMph(position.coords.speed);
         const avg_speed = speedAverager(speedMph);
-        document.getElementById("speed").innerHTML = speedMph || 0;
-        document.getElementById("avg_speed").innerHTML = avg_speed || 0;
+        console.log(speedMph, avg_speed);
+        document.getElementById("speed").innerHTML = formattedSpeed(speedMph) || 0;
+        document.getElementById("avg_speed").innerHTML = formattedSpeed(avg_speed) || 0;
     });
 }
 
