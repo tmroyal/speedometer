@@ -46,13 +46,19 @@ function formattedSpeed(speed){
 
 function geoSucc(){
     const speedAverager = createSpeedAverager(30);
+    const options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
     navigator.geolocation.watchPosition(function(position) {
         const speedMph = mpsToMph(position.coords.speed);
         const avg_speed = speedAverager(speedMph);
-        console.log(speedMph, avg_speed);
-        document.getElementById("speed").innerHTML = formattedSpeed(speedMph) || 0;
-        document.getElementById("avg_speed").innerHTML = formattedSpeed(avg_speed) || 0;
-    });
+        document.getElementById("speed").innerHTML = formattedSpeed(speedMph || 0);
+        document.getElementById("avg_speed").innerHTML = formattedSpeed(avg_speed || 0);
+    }, function(err){
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+    }, options);
 }
 
 function createSpeedAverager(n){
