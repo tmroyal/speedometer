@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web API Speedometer</title>
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        padding: 1em 0;
+        background-color: black;
+    }
+    .display {
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 3em;
+        text-align: center;
+        margin: 0.5em;
+        color: white;
+    }
+    .label {
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 1em;
+        text-align: center;
+        margin: 0.5em;
+        color: white;
+    }
+</style>
+</head>
+<body>
+    <div class="label">Speed</div>
+    <div id="speed" class="display">Loading</div>
+    <div class="label">Avg Speed</div>
+    <div id="avg_speed" class="display">Loading</div>
+<script>
+function detectGeolocation(success, fail){
+    if (navigator.geolocation) {
+        success();
+    } else {
+        fail();
+    }
+}
+
+function geoSucc(){
+    const speedAverager = createSpeedAverager(30);
+    navigator.geolocation.watchPosition(function(position) {
+        const speedMph = mpsToMph(position.coords.speed);
+        const avg_speed = speedAverager(speedMph);
+        document.getElementById("speed").innerHTML = speedMph || 0;
+        document.getElementById("avg_speed").innerHTML = avg_speed || 0;
+    });
+}
+
+function createSpeedAverager(n){
+    // creates a speed averager with window size n 
+    // and returns a function that takes in a speed and returns the average
+    let speeds = [];
+    return function(speed){
+        if (typeof speed !== "number"){
+            speed = 0;
+        }
+        speeds.push(speed);
+        if (speeds.length > n){
+            speeds.shift();
+        }
+        return speeds.reduce((a, b) => a + b, 0) / speeds.length;
+    }
+}
+
+function mpsToMph(speed){
+    if (typeof speed !== "number"){
+        return 0;
+    }
+    return speed * 2.2369362920544;
+}
+
+
+function geoFail(){
+    document.getElementById("speed").innerHTML = "Not Available";
+    document.getElementById("avg_speed").innerHTML = "Not Available";
+}
+
+detectGeolocation(geoSucc, geoFail);
+
+</script>
+</body>
+</html>
